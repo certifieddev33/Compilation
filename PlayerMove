@@ -1,0 +1,41 @@
+package cert.plugin.PvP;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+public class PlayerMove implements Listener {
+	private final PvP plugin;
+	public PlayerMove(PvP plugin) {
+		this.plugin = plugin;
+		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent event) {
+		if(event.getFrom().add(0,-1,0).getBlock().getType().equals(Material.CLAY) && event.getPlayer().getWorld().getName().equals("New World")) {
+			if(event.getTo().distance(event.getFrom())>1) {
+				event.getFrom().getBlock().setType(Material.RED_GLAZED_TERRACOTTA);
+				Location from = event.getFrom().getBlock().getLocation();
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						FallingBlock fall = event.getPlayer().getWorld().spawnFallingBlock(from.add(.5,0,.5), new MaterialData(Material.RED_GLAZED_TERRACOTTA));
+						fall.setMetadata("fallingBlock", new FixedMetadataValue(Bukkit.getPluginManager().getPlugin("PvP"), "fallingBlock"));
+						fall.setDropItem(false);
+						fall.setHurtEntities(true);
+						event.getFrom().getBlock().setType(Material.AIR);
+					}
+				 }.runTaskLater(this.plugin, 20);
+				}
+			}
+		}
+}
