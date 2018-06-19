@@ -1,0 +1,18 @@
+package cert.plugin.PvP;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryDragEvent;
+
+public class InventoryDrag implements Listener {
+	@EventHandler
+	public void onInventoryDrag(InventoryDragEvent event) {
+		Player player = (Player) event.getWhoClicked();
+		if(event.getInventory().getTitle().equals("Shop")) {
+			event.setCancelled(true);
+		}
+		player.updateInventory();
+	}
+}
