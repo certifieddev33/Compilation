@@ -1,0 +1,51 @@
+package cert.plugin.PvP;
+
+import java.util.HashMap;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionAttachment;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class PvPCommand implements CommandExecutor {
+	 HashMap<String,PermissionAttachment> attachments = new HashMap<String, PermissionAttachment>();
+	 @Override
+	 public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		 if (sender instanceof Player) {
+			 Player player = (Player) sender;
+			 if(args.length>1) {
+				 player.sendMessage("Error. Only one argument required.");
+				 return true;
+			 }
+			 if(args.length==0) {
+			 Bukkit.broadcastMessage(ChatColor.DARK_BLUE + player.getName() + " is ready to duel!");
+			 player.teleport(new Location(player.getWorld(),181,104,371));
+			 }else {
+				 Player target = Bukkit.getPlayerExact(args[0]);
+			     if(target==null) {
+					 player.sendMessage("That player is not online.");
+			 }else {
+				 player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD), new ItemStack(Material.BOW), new ItemStack(Material.ARROW, 64));
+				 player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+				 player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+				 player.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+				 player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+				 target.sendMessage(player.getName() + " has challenged you to a duel! Type /duelaccept within the next 120 seconds to accept the duel!");
+			     PermissionAttachment attachment = target.addAttachment(Bukkit.getPluginManager().getPlugins()[0],2400);
+			     attachment.setPermission("PvP.duelaccept",true);
+			     player.teleport(new Location(player.getWorld(),181,104,371));
+			 }
+				 
+			 }
+		 }
+	     return true;
+	 }
+}
