@@ -1,0 +1,34 @@
+package cert.plugin.PvP;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.connorlinfoot.actionbarapi.ActionBarAPI;
+
+import net.milkbowl.vault.economy.Economy;
+
+public class OnPlayerJoin implements Listener {
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		PvP instance = JavaPlugin.getPlugin(PvP.class);
+		Economy economy = instance.getEconomy();
+		if(event.getPlayer().hasPlayedBefore()) {
+			event.setJoinMessage(ChatColor.RED + "Welcome, " + event.getPlayer().getName() + "!");
+		}else {
+			economy.createPlayerAccount(event.getPlayer());
+			economy.depositPlayer(event.getPlayer(), 100);
+			event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + " joined the server for the first time! [#" + Bukkit.getOfflinePlayers().length + "]");
+		}
+		ActionBarAPI.sendActionBar(event.getPlayer(), "Test message", 100);
+		Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "title " + event.getPlayer().getName() + " subtitle {\"text\":\"Thanks for joining!\", \"italic\":true, \"color\":\"green\"}");
+		Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "title " + event.getPlayer().getName() + " title {\"text\":\"Welcome to the server!\", \"bold\":true, \"color\":\"gold\"}");
+	}
+	
+}
