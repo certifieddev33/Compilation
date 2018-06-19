@@ -1,0 +1,34 @@
+package cert.plugin.PvP;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+public class EntityChangeEvent implements Listener {
+	private final PvP plugin;
+	public EntityChangeEvent(PvP plugin) {
+		this.plugin = plugin;
+		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+	@EventHandler
+	public void onEntityChange(EntityChangeBlockEvent event) {
+		if((event.getBlock().getWorld().getName().equals("New World")) && event.getEntity().hasMetadata("fallingBlock")) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					event.getEntity().getWorld().playEffect(event.getBlock().getLocation(), Effect.STEP_SOUND, Material.RED_GLAZED_TERRACOTTA);
+					event.getBlock().breakNaturally(new ItemStack(Material.DIAMOND_AXE));
+				}
+			}.runTaskLater(this.plugin, 10);
+		}
+	}
+}
