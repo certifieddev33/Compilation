@@ -1,0 +1,25 @@
+package cert.plugin.PvP;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class NewWorldCommand implements CommandExecutor {
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if(sender instanceof Player) {
+			Player player = (Player) sender;
+			WorldCreator world = new WorldCreator("New World");
+			world.type(WorldType.FLAT);
+			world.generateStructures(false);
+			player.teleport(new Location(Bukkit.createWorld(world), 0, 0, 0));
+		} 
+		
+		return true;
+	}
+}
