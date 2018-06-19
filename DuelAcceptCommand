@@ -1,0 +1,45 @@
+package cert.plugin.PvP;
+
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionAttachment;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class DuelAccept implements CommandExecutor {
+	HashMap<String,PermissionAttachment> attachments = new HashMap<String, PermissionAttachment>();
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {	
+		if (sender instanceof Player) {
+			 Player player = (Player) sender;
+			 if(!(player.hasPermission("PvP.duelaccept"))) {
+				 player.sendMessage("Nobody has dueled you, or a previous duel request expired!");
+				 return true;
+			 }
+			 if(args.length>0) {
+				 player.sendMessage("Error: No arguments required.");
+			 }else {
+				 player.sendMessage("You have accepted the duel request!");
+				 player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD), new ItemStack(Material.BOW), new ItemStack(Material.ARROW, 64));
+				 player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+				 player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+				 player.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+				 player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+				 player.teleport(new Location(player.getWorld(), 181, 104, 371));
+				 PermissionAttachment attachment = player.addAttachment(Bukkit.getPluginManager().getPlugins()[0],2400);
+			     attachment.setPermission("PvP.duelaccept",false);
+				 
+			 }
+			 
+		}
+		return true;
+	}
+}
