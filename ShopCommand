@@ -1,0 +1,38 @@
+package cert.plugin.PvP;
+
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class ShopCommand implements CommandExecutor {
+	 public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		 if(sender instanceof Player) {
+			 Player player = (Player) sender;
+			 Inventory shop = Bukkit.createInventory(player, 54, "Shop");
+			 shop.setItem(1, createDiamond());
+			 player.openInventory(shop);
+		 }
+		 
+		 return true;
+	 }
+	 public ItemStack createDiamond() {
+		 ItemStack diamond = new ItemStack(Material.DIAMOND);
+		 ItemMeta diamondMeta = diamond.getItemMeta();
+		 diamondMeta.setDisplayName("Test Item");
+		 ArrayList<String> lore = new ArrayList<>();
+		 lore.add(ChatColor.YELLOW + "" + ChatColor.BOLD + "This item is a test item.");
+		 diamondMeta.setLore(lore);
+		 diamond.setItemMeta(diamondMeta);
+		 return diamond;
+	 }
+}
