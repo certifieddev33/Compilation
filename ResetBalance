@@ -1,0 +1,31 @@
+package cert.plugin.PvP;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import net.milkbowl.vault.economy.Economy;
+
+public class EconCommand implements CommandExecutor {
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		PvP instance = JavaPlugin.getPlugin(PvP.class);
+		Economy economy = instance.getEconomy();
+		if (args.length == 0) { 
+		        sender.sendMessage("You must specify the name of the player whose balance you would like to reset");
+		        return true;
+		    }
+		    String playerName = String.join(" ", args);
+		    OfflinePlayer target = Bukkit.getPlayer(playerName);
+		    if (target == null) { 
+		        sender.sendMessage("A player with the name '" + playerName + "' has never joined this server");
+		        return true;
+		    }
+		    
+		    economy.withdrawPlayer(target, economy.getBalance(target));
+		return true;
+	}
+}
