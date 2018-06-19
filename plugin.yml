@@ -1,0 +1,34 @@
+main: cert.plugin.PvP.PvP
+name: PvP
+version: 2.0.1
+author: me
+description: A PvP plugin
+depend: [Vault]
+depend: [ActionBarAPI]
+commands:
+  pvp:
+    description: A PvP Command
+    usage: /pvp
+  duelaccept:
+    description: Accepting a pvp command
+    usage: /duelaccept
+  shop:
+    description: Opens a shop GUI
+    usage: /shop
+  resetbalance:
+    description: Resets the balance of a player.
+    usage: /resetbalance
+  balance:
+    description: Shows balance of a player.
+    usage: /balance
+    aliases: [bal, money]
+  createworld:
+    description: Creates a new world.
+    usage: /createworld
+    permission: PvP.createworld
+    permission-message: You do not have sufficient permissions.
+  teleportto:
+    description: Teleports to a world.
+    usage: /teleportto
+    permission: PvP.teleportto
+    permission-message: You do not have sufficient permissions.
