@@ -1,0 +1,33 @@
+package cert.plugin.PvP;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import net.md_5.bungee.api.ChatColor;
+import net.milkbowl.vault.economy.Economy;
+
+public class ShowBalance implements CommandExecutor {
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		PvP instance = JavaPlugin.getPlugin(PvP.class);
+		Economy economy = instance.getEconomy();
+		if(sender instanceof Player) {
+			Player player = (Player) sender;
+			if(args.length == 0) {
+				player.sendMessage(ChatColor.GREEN + "Balance: " + economy.getBalance(player) + " coins.");
+			}else if(args.length>0) {
+				Player target = Bukkit.getPlayerExact(args[0]);
+				player.sendMessage(ChatColor.GREEN + "Balance of " + target + ": " + economy.getBalance(target));
+			}else if(args.length>1) {
+				player.sendMessage("Error: Only one argument required.");
+				return true;
+			}
+		}
+		
+		return true;
+	}
+}
